@@ -1,0 +1,39 @@
+# Generated data (don't commit 7GB CSV)
+*.csv
+predict_*.csv
+results/
+*.tar.gz
+
+# Build artifacts
+target/
+dist/
+build/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Julia
+.julia/
+.packages/
+
+# Python
+*.egg-info/
+.env
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Large files
+*.7z
+*.zip
+*.rar

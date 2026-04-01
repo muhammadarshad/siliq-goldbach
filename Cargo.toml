@@ -1,0 +1,20 @@
+[package]
+name = "siliq-goldbach"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "siliq-goldbach"
+path = "src/main.rs"
+
+[[bin]]
+name = "predict"
+path = "src/predict.rs"
+
+[dependencies]
+rayon = "1.10"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
