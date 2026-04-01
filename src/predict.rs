@@ -178,15 +178,7 @@ fn main() {
     println!("    Sweet spot rule: rings(10^x) = x - 3");
     println!("      10^4 → 1 ring, 10^8 → 5 rings, 10^12 → 9 rings, 10^18 → 15 rings");
     println!();
-    // ── CSV block writer: 8 MB buffer, every even n gets a row ──────────
-    // pair_count = total Goldbach pairs found by the biopod walk (for comet)
-    let csv_path = format!("siliq_{}.csv", n);
-    let csv_file = File::create(&csv_path).expect("cannot create CSV");
-    let csv_writer = Mutex::new(BufWriter::with_capacity(8 * 1024 * 1024, csv_file));
-    {
-        let mut w = csv_writer.lock().unwrap();
-        writeln!(w, "n,N,result,first_k,lo,hi,d,quadrant,pair_count").unwrap();
-    }
+    
     // ── [A] predict_hv — geometry prediction ────────────────────────────────
     let (k_max, orbits, hvs) = predict_hv(n);
     let rings_needed: u32 = if base_x >= 3 { base_x - 3 } else { 0 };
