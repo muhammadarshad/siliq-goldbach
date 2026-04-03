@@ -1,0 +1,130 @@
+═══════════════════════════════════════════════════════════════════════
+  predict  —  Zring Prediction Oracle + Full BPAND Walk
+  Target: n = 1,000,000
+═══════════════════════════════════════════════════════════════════════
+
+----------------------------------------------------------------------
+[P] Z256 Ring Prediction Oracle (pure math, no primes)
+----------------------------------------------------------------------
+  Z256 ring: 256 positions
+    Vacuum boundaries: 4 (0, 64, 128, 192)
+    Non-vacuum: 252 = 256 - 4
+    Per quadrant: 63 = 252 / 4
+    63 mod 7 = 0  =>  7 x 9 = 63
+    7-prime walk: 9 steps per cycle, 9 cycles covers 63, 36 cycles covers 252
+    Zero gaps, zero repeats, full coverage
+
+  Four-arm witnessing for k = 1:
+    d1 = 1  d2 = 65  d3 = 129  d4 = 193
+    All four point to (N-k, N+k) = (499,999, 500,001)
+    When BPAND = 1, all four ring directions confirm the pair
+
+  Prediction:
+    Each quadrant will be filled in <=63 steps
+    Expected first hit at rotation 9 (one full prime cycle)
+    Sweet spot rule: rings(10^x) = x - 3
+      10^4 -> 1 ring, 10^8 -> 5 rings, 10^12 -> 9 rings, 10^18 -> 15 rings
+
+----------------------------------------------------------------------
+[A] Geometry Prediction (no sieve needed)
+----------------------------------------------------------------------
+  n           = 1,000,000
+  N = n/2     = 500,000
+  k_max       = 499,998
+  orbits      = 1,985 (each 252 predictions)
+  HVs         = 35 (each 14,464 cells = 57 orbits)
+  Zrings      = 3 (each 252 orbits)
+  structure   = 35 HVs -> 1 Zring index
+
+----------------------------------------------------------------------
+[B] Prime Sieve (bitwise, 1 bit per odd)
+----------------------------------------------------------------------
+  Sieve memory:  0.1 MB (62,501 bytes)
+  Sieve time:    0.000s
+
+----------------------------------------------------------------------
+[C] Full BPAND Walk  --  n = 1,000,000
+----------------------------------------------------------------------
+  Walking k = 1 .. 499,998 through 35 HVs ...
+
+  Walk complete in 0.005s
+  CSV written: predict_1000000.csv
+
+----------------------------------------------------------------------
+[D] U / U' Conjugate Arm Analysis
+----------------------------------------------------------------------
+  Center N = 500,000
+  U  = N - k  (arm sweeping LEFT)
+  U' = N + k  (arm sweeping RIGHT)
+  Conservation: U + U' = 1,000,000 = n  (ALWAYS)
+
+  Total BPAND hits:    5,402
+  Total predictions:   499,999
+  Hit rate:            1.080402%
+
+  First 10 BPAND hits:
+             k         U(=N-k)        U'(=N+k)            U+U'       L_U      L_U'   L_tot     d   d^128
+    ----------  --------------  --------------  --------------  --------  --------  ------  ----  ------
+            57         499,943         500,057       1,000,000       -57        57       0   143      15
+           321         499,679         500,321       1,000,000      -321       321       0   234     106
+           363         499,637         500,363       1,000,000      -363       363       0    16     144
+           393         499,607         500,393       1,000,000      -393       393       0   233     105
+           519         499,481         500,519       1,000,000      -519       519       0   105     233
+           603         499,397         500,603       1,000,000      -603       603       0   188      60
+           723         499,277         500,723       1,000,000      -723       723       0    18     146
+           861         499,139         500,861       1,000,000      -861       861       0   230     102
+           873         499,127         500,873       1,000,000      -873       873       0    58     186
+           933         499,067         500,933       1,000,000      -933       933       0   229     101
+
+  First hit:  k = 57, d = 143 (DN+)
+
+  ARM REACH:
+    Min k:    57
+    Max k:    499,983
+    Mean |k|: 258699
+    Sigma spin:   +100
+    |Sigma|/N:    0.018512
+    Anti-spin: 51.0% (consecutive hits with opposite spin)
+
+----------------------------------------------------------------------
+[E] Z256 Quadrant Distribution
+----------------------------------------------------------------------
+    UP+ [  0.. 63]:          1,849  ( 34.2%) #############
+    UP- [ 64..127]:            902  ( 16.7%) ######
+    DN+ [128..191]:          1,773  ( 32.8%) #############
+    DN- [192..255]:            878  ( 16.3%) ######
+
+  Quadrant transitions:  3,989 / 5,401 = 73.9%
+
+----------------------------------------------------------------------
+[F] HV Fill Distribution (35 HVs used / 35 predicted)
+----------------------------------------------------------------------
+  Mean hits/HV:  154.3
+  Min:           129
+  Max:           184
+  Empty HVs:     0
+  Total hits:    5,402 (check: 5,402)
+
+  STRUCTURE:
+    1 prediction Zring -> 35 HVs -> 1 index Zring(s)
+
+----------------------------------------------------------------------
+[G] Claims
+----------------------------------------------------------------------
+
+  Claim                                              Status     Evidence
+  -------------------------------------------------- ---------- ----------------------------------------
+  Goldbach pair exists for n                         DERIVED    5,402 pairs found, first at k = 57
+  All 4 quadrants produce BPAND hits                 DERIVED    [1,849, 902, 1,773, 878]
+  Quadrants balanced (+-15%)                         DERIVED    [0.342, 0.167, 0.328, 0.163]
+  No empty HVs (uniform fill)                        DERIVED    0 empty out of 35 used
+  Spin near-cancellation (|S|/N < 0.1)               DERIVED    Sigma_spin = +100, |S|/N = 0.018512
+  Hit rate > 0 (primes survive filter)               DERIVED    1.080402%
+  Quadrant transition rate > 50%                     DERIVED    73.9%
+
+  SCORECARD: 7 DERIVED, 0 FAILED
+
+═══════════════════════════════════════════════════════════════════════
+  n = 1,000,000  |  5,402 BPAND hits  |  first_k = 57  |  max_k = 499,983
+  Sieve: 0.1 MB in 0.00s  |  Walk: 0.00s  |  Total: 0.01s
+═══════════════════════════════════════════════════════════════════════
